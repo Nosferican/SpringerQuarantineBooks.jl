@@ -9,8 +9,8 @@ const fields = Ref{Vector{String}}()
 const titles = Ref{Vector{String}}()
 const epubs = Ref{Vector{String}}()
 const pdfs = Ref{Vector{String}}()
-function init()
-    data = readdlm(joinpath(@__DIR__, "data", "FreeEnglishTextbooksEnhanced.tsv"), '\t',
+function __init__()
+    data = readdlm(joinpath(@__DIR__, "..", "data", "FreeEnglishTextbooksEnhanced.tsv"), '\t',
                    header = true)
     fields.x = convert(Vector{String}, data[1][:,findfirst(isequal("English Package Name"), vec(data[2]))])
     titles.x = replace.(string.(data[1][:,findfirst(isequal("Book Title"), vec(data[2]))], " - ", data[1][:,findfirst(isequal("Edition"), vec(data[2]))]),
