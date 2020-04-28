@@ -17,6 +17,7 @@ function __init__()
                         "/" => "_")
     epubs.x = data[1][:,findfirst(isequal("epub"), vec(data[2]))]
     pdfs.x = data[1][:,findfirst(isequal("pdf"), vec(data[2]))]
+    nothing
 end
 """
     download_book(basepath::AbstractString, field::AbstractString, title::AbstractString, epub::AbstractString, pdf::AbstractString)
