@@ -5,18 +5,29 @@ Module for downloading the SpringerQuarantineBooks.
 """
 module SpringerQuarantineBooks
 using DelimitedFiles: readdlm
-const fields = Ref{Vector{String}}()
-const titles = Ref{Vector{String}}()
-const epubs = Ref{Vector{String}}()
-const pdfs = Ref{Vector{String}}()
+const en_fields = Ref{Vector{String}}()
+const en_titles = Ref{Vector{String}}()
+const en_epubs = Ref{Vector{String}}()
+const en_pdfs = Ref{Vector{String}}()
+const de_fields = Ref{Vector{String}}()
+const de_titles = Ref{Vector{String}}()
+const de_epubs = Ref{Vector{String}}()
+const de_pdfs = Ref{Vector{String}}()
 function __init__()
     data = readdlm(joinpath(@__DIR__, "..", "data", "FreeEnglishTextbooksEnhanced.tsv"), '\t',
                    header = true)
-    fields.x = convert(Vector{String}, data[1][:,findfirst(isequal("English Package Name"), vec(data[2]))])
-    titles.x = replace.(string.(data[1][:,findfirst(isequal("Book Title"), vec(data[2]))], " - ", data[1][:,findfirst(isequal("Edition"), vec(data[2]))]),
+    en_fields.x = convert(Vector{String}, data[1][:,findfirst(isequal("English Package Name"), vec(data[2]))])
+    en_titles.x = replace.(string.(data[1][:,findfirst(isequal("Book Title"), vec(data[2]))], " - ", data[1][:,findfirst(isequal("Edition"), vec(data[2]))]),
                         "/" => "_")
-    epubs.x = data[1][:,findfirst(isequal("epub"), vec(data[2]))]
-    pdfs.x = data[1][:,findfirst(isequal("pdf"), vec(data[2]))]
+    en_epubs.x = data[1][:,findfirst(isequal("epub"), vec(data[2]))]
+    en_pdfs.x = data[1][:,findfirst(isequal("pdf"), vec(data[2]))]
+    data = readdlm(joinpath(@__DIR__, "..", "data", "FreeGermanTextbooksEnhanced.tsv"), '\t',
+                   header = true)
+    de_fields.x = convert(Vector{String}, data[1][:,findfirst(isequal("English Package Name"), vec(data[2]))])
+    de_titles.x = replace.(string.(data[1][:,findfirst(isequal("Book Title"), vec(data[2]))], " - ", data[1][:,findfirst(isequal("Edition"), vec(data[2]))]),
+                        "/" => "_")
+    de_epubs.x = data[1][:,findfirst(isequal("epub"), vec(data[2]))]
+    de_pdfs.x = data[1][:,findfirst(isequal("pdf"), vec(data[2]))]
     nothing
 end
 """
@@ -47,14 +58,23 @@ function download_book(basepath, field, title, epub, pdf)
     end
 end
 """
-    download_springer_quarantine_books(basepath::AbstractString)
+    download_springer_quarantine_books(basepath::AbstractString, lang::AbstractString = "en")
 
 Uses `download_book` to download all books at the given basepath.
 The schema is `basepath/field/title - edition.epub` or `basepath/field/title - edition.pdf` if epub is not available.
+For the German textbooks, pass `lang` as `de`.
 """
-function download_springer_quarantine_books(basepath::AbstractString)
-    for (field, title, epub, pdf) in zip(fields.x, titles.x, epubs.x, pdfs.x)
-        download_book(basepath, field, title, epub, pdf)
+function download_springer_quarantine_books(basepath::AbstractString, lang::AbstractString = "en")
+    if lang == "en"
+        for (field, title, epub, pdf) in zip(en_fields.x, en_titles.x, en_epubs.x, en_pdfs.x)
+            download_book(basepath, field, title, epub, pdf)
+        end
+    elseif lang == "de"
+        for (field, title, epub, pdf) in zip(de_fields.x, de_titles.x, de_epubs.x, de_pdfs.x)
+            download_book(basepath, field, title, epub, pdf)
+        end
+    else
+        throw(ArgumentError("lang must be either en for English or de for German"))
     end
 end
 export download_springer_quarantine_books,
