@@ -1,0 +1,10 @@
+name = "SpringerQuarantineBooks"
+uuid = "1b65ca8a-1cb7-41bb-bb4e-3a52804bb50d"
+authors = ["José Bayoán Santiago Calderón <naoyabpr@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
+
+[compat]
+julia = "1"
