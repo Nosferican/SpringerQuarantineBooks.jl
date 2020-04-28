@@ -14,3 +14,7 @@ A tool for downloading the Springer Quarantine Books.
 [ddu]: https://Nosferican.github.io/SpringerQuarantineBooks.jl/dev/
 [li]: https://img.shields.io/github/license/Nosferican/SpringerQuarantineBooks.jl?style=plastic
 [lu]: https://tldrlegal.com/license/-isc-license
+
+[Free access to a range of essential textbooks from all disciplines](https://www.springernature.com/gp/librarians/news-events/all-news-articles/industry-news-initiatives/free-access-to-textbooks-for-institutions-affected-by-coronaviru/17855960)!
+
+See [catalog](https://github.com/Nosferican/SpringerQuarantineBooks.jl/blob/master/data/FreeEnglishTextbooksEnhanced.tsv) for available textbooks and formats as well as additional metadata.
